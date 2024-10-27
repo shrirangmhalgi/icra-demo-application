@@ -27,4 +27,4 @@ setuptools==69.5.1
 six==1.16.0
 sympy==1.13.3
 torch==2.2.2
-gunicon
+gunicorn==19.0.0
