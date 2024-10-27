@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Upload</title>
+    <style>
+        /* Reset margin and padding */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #f0f4f8, #d9e6f2, #60c3a4);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        /* Transparent Navbar styling */
+        .navbar {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: transparent;
+            padding: 10px 20px;
+            position: fixed;
+            top: 0;
+            z-index: 10;
+        }
+
+        .navbar .logo img {
+            width: 100px;
+            height: auto;
+        }
+
+        .navbar .nav-links {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar .nav-links a {
+            color: #4c736a;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 18px;
+        }
+
+        .navbar .nav-links a:hover {
+            text-decoration: underline;
+        }
+
+        /* Image Upload Container */
+        .upload-container {
+            background-color: #60c3a4;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            width: 600px;
+            text-align: center;
+            margin-top: 100px;
+        }
+
+        h2 {
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        label {
+            color: white;
+            font-size: 16px;
+            margin-bottom: 5px;
+            display: block;
+            text-align: left;
+        }
+
+        form input[type="file"],
+        form input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+        }
+
+        form input[type="file"] {
+            background-color: white;
+            color: #4c736a;
+        }
+
+        form input[type="submit"] {
+            background-color: white;
+            color: #4c736a;
+            cursor: pointer;
+        }
+
+        form input[type="submit"]:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* Styles for the popup */
+        #popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+        }
+
+        #popup img {
+            max-width: 90%;
+            max-height: 90%;
+        }
+
+        #close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 30px;
+            cursor: pointer;
+        }
+
+        #uploadedImageContainer {
+            margin-top: 20px;
+        }
+
+        #uploadedImageContainer img {
+            max-height: 50%;
+            max-width : 50%;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .file-container{
+            display: flex;    
+            justify-content: center;
+        }
+
+        .rgb-sparse-label{
+            width: 300px;
+            justify-content: center;
+        }
+
+
+        /* Styling the dropdown container */
+        .dropdown-container {
+            display: flex;
+            /* margin: 20px; */
+            /* padding: 20px; */
+            background-color: #60c3a4;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        /* Styling the label */
+        label {
+            font-size: 18px;
+            color: white;
+            margin-right: 10px;
+        }
+
+        /* Styling the dropdown menu */
+        select {
+            padding: 10px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* Style for hover effect */
+        select:hover {
+            background-color: #d9e6f2;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Transparent Navbar -->
+    <nav class="navbar">
+        <!-- Logo in the navbar -->
+        <div class="logo">
+            <a href="#">
+                <img src="{{ url_for('static', filename='intisca_logo.png') }}" alt="Company Logo">
+            </a>
+        </div>
+
+        <!-- Navigation Links -->
+        <div class="nav-links">
+            <a href="#">Home</a>
+            <a href="#">About</a>
+            <a href="#">Services</a>
+            <a href="#">Contact</a>
+        </div>
+    </nav>
+
+    <!-- Image Upload Form -->
+    <div class="upload-container">
+        <h2>Dense Depth Generator</h2>
+        <form id="uploadForm" action="/upload" method="post" enctype="multipart/form-data">
+            <div class="dropdown-container" id="model-dropdown">
+                <label for="optionsDropdown" class="rgb-sparse-label">Select Model:</label>
+                <select id="optionsDropdown" name="selected_option">
+                    <option value="kitti-bs64">kitti-bs64</option>
+                    <option value="nyuv2-bs8">nyuv2-bs8</option>
+                </select>
+            </div>
+
+            
+            <div class="file-container">
+                <label for="rgb_file" class="rgb-sparse-label">RGB Image:</label>
+                <input type="file" name="rgb_file" id="rgb_file" accept="image/*" required>
+
+            </div>
+            
+            <div class="file-container">
+                <label for="sparse_depth_file" class="rgb-sparse-label">Sparse Depth Image:</label>
+                <input type="file" name="sparse_depth_file" id="sparse_depth_file" accept="image/*" required>
+            </div>
+            
+            <input type="submit" value="Upload">
+        </form>
+
+        
+        <div id="uploadedImageContainer">
+            <h2>Results</h2>
+        </div>
+    </div>
+
+    <!-- Popup for the image -->
+    <div id="popup">
+        <span id="close">&times;</span>
+        <img id="popupImage" src="" alt="Uploaded Image">
+    </div>
+
+    <script>
+        document.getElementById('uploadForm').onsubmit = function(event) {
+            event.preventDefault(); // Prevent form submission
+
+            var formData = new FormData(this);
+            fetch('/upload', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Display the uploaded image
+                    var img = document.createElement('img');
+                    img.src = '/static/uploads/rgb/' + data.filename;
+                    img.onclick = function() {
+                        // Show popup
+                        document.getElementById('popupImage').src = img.src;
+                        document.getElementById('popup').style.display = 'flex';
+                    };
+
+                    document.getElementById('uploadedImageContainer').innerHTML = ''; // Clear previous images
+                    document.getElementById('uploadedImageContainer').appendChild(img);
+                } else {
+                    alert('Image upload failed. Please try again.');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        };
+
+        // Close the popup when the close button is clicked
+        document.getElementById('close').onclick = function() {
+            document.getElementById('popup').style.display = 'none';
+        };
+
+        // Close the popup when clicking outside of the image
+        window.onclick = function(event) {
+            if (event.target === document.getElementById('popup')) {
+                document.getElementById('popup').style.display = 'none';
+            }
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <style>
+        /* Reset margin and padding */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #f0f4f8, #d9e6f2, #60c3a4); /* Gradient background */
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        /* Transparent Navbar styling */
+        .navbar {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: transparent; /* Transparent background */
+            padding: 10px 20px;
+            position: fixed;
+            top: 0;
+            z-index: 10;
+        }
+
+        .navbar .logo img {
+            width: 100px; /* Adjust the logo width as needed */
+            height: auto;
+        }
+
+        .navbar .nav-links {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar .nav-links a {
+            color: #4c736a;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 18px;
+        }
+
+        .navbar .nav-links a:hover {
+            text-decoration: underline;
+        }
+
+        /* Login Container Styling */
+        .login-container {
+            background-color: #60c3a4; /* Green background for the form */
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            width: 350px;
+            text-align: center;
+            margin-top: 100px; /* Push content below navbar */
+        }
+
+        h2 {
+            color: white; /* White text for the heading */
+            margin-bottom: 20px;
+        }
+
+        .login-container input[type="text"],
+        .login-container input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .show-password {
+            display: flex;
+            align-items: center;
+            justify-content: left;
+            margin: 10px 0;
+            color: white; /* White text for the "Show Password" label */
+        }
+
+        .show-password input[type="checkbox"] {
+            margin-right: 5px;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 10px;
+            background-color: white; /* White button */
+            border: none;
+            border-radius: 5px;
+            color: #4c736a; /* Green text for button */
+            font-size: 16px;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+
+        .login-btn:hover {
+            background-color: #f0f0f0; /* Lighter hover state for the button */
+        }
+
+        .forgot-link {
+            display: block;
+            margin-bottom: 10px;
+            color: white;
+            font-size: 14px;
+            text-decoration: none;
+        }
+
+        .signup-link {
+            color: white;
+            font-size: 14px;
+        }
+
+        .signup-link a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .signup-link a:hover {
+            text-decoration: underline;
+        }
+
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Transparent Navbar -->
+    <nav class="navbar">
+        <!-- Logo in the navbar -->
+        <div class="logo">
+            <a href="#">
+                <img src="{{ url_for('static', filename='intisca_logo.png') }}" alt="Company Logo">
+            </a>
+        </div>
+
+        <!-- Navigation Links -->
+        <div class="nav-links">
+            <a href="#">Home</a>
+            <a href="#">About</a>
+            <a href="#">Services</a>
+            <a href="#">Contact</a>
+        </div>
+    </nav>
+
+    <!-- Login Form -->
+    <div class="login-container">
+        <h2>Login</h2>
+        <form method="POST" action="/login">
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="password" name="password" placeholder="Password" required id="password">
+
+            <div class="show-password">
+                <input type="checkbox" id="showPassword" onclick="togglePassword()"> 
+                <label for="showPassword">Show Password</label>
+            </div>
+
+            <button type="submit" class="login-btn">SIGN IN</button>
+            
+            {% if error %}
+                <p class="error">{{ error }}</p>
+            {% endif %}
+        </form>
+
+        <a href="#" class="forgot-link">Forgot Username / Password?</a>
+        <div class="signup-link">
+            Don't have an account? <a href="#">Sign up</a>
+        </div>
+    </div>
+
+    <script>
+        function togglePassword() {
+            var password = document.getElementById("password");
+            if (password.type === "password") {
+                password.type = "text";
+            } else {
+                password.type = "password";
+            }
+        }
+    </script>
+
+</body>
+</html>
