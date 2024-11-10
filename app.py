@@ -98,7 +98,9 @@ def upload_file():
         sparse_depth_file.save(os.path.join(app.config['SPARSE_DEPTH_FOLDER'], sparse_depth_filename))
 
         # call the ML code to generate the results...... save the files in the correct format
-        dense_depth_filename = generate_results(model, current_timestamp)
+        dense_depth_filename = None #generate_results(model, current_timestamp)
+
+        print("website works sucessfully except for the ml model ")
 
         # if something fails
         if dense_depth_filename is None:
