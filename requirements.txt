@@ -32,4 +32,4 @@ torchvision==0.17.2
 typing_extensions==4.12.2
 Werkzeug==3.0.4
 wheel==0.43.0
-gunicon==20.1.0
+gunicorn==23.0.0
